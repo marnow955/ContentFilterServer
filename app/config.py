@@ -11,6 +11,10 @@ class DbConfig(object):
     DATABASE = "posts"
 
 
+class SqliteConfig(object):
+    DATABASE_PATH = 'PATH/TO/LOCAL/SQLITE/DATABASE'
+
+
 AuthConfig = [{
     'USER': 'admin',
     'PASSWORD': 'BD2B1AAF7EF4F09BE9F52CE2D8D599674D81AA9D6A4421696DC4D93DD0619D68'

@@ -9,10 +9,9 @@ class MainController(object):
         self._queue_manager.bind_to(self.run_filter)
 
     def run_filter(self):
-        print("OK")
         while not self._queue_manager.is_queue_empty():
             post_id = self._queue_manager.get_from_queue()
-            self._db_manager.update_columns('posts', {'flag': '5'}, 'ID=' + str(post_id), join_transaction=True)
+            self._db_manager.update_columns('posts', {'flag': '0'}, 'ID=' + str(post_id), join_transaction=True)
             # result = self._db_manager.select_from_table('posts', condition='ID='+str(post_id), join_transaction=True)
             # print(str(result))
         self._db_manager.commit()
