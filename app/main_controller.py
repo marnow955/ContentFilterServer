@@ -11,9 +11,10 @@ class MainController(object):
     def run_filter(self):
         while not self._queue_manager.is_queue_empty():
             post_id = self._queue_manager.get_from_queue()
+            post_content, post_flag = self._db_manager.select_from_table('posts', ('content', 'flag'),
+                                                                         'ID=' + str(post_id), True)[0]
+            print(str(post_id) + ": " + post_content + " " + str(post_flag))
             self._db_manager.update_columns('posts', {'flag': '0'}, 'ID=' + str(post_id), join_transaction=True)
-            # result = self._db_manager.select_from_table('posts', condition='ID='+str(post_id), join_transaction=True)
-            # print(str(result))
         self._db_manager.commit()
         self._db_manager.disconnect()
 

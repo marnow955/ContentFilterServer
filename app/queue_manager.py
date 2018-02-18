@@ -1,10 +1,26 @@
 from queue import Queue
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 class QueueManager(object):
-    def __init__(self, size=1):
+    """ If size is 1 the callback functions is run immediately.
+        Else callback is run when queue is full or when timeout reached.
+        Size equals 0 means that queue is endless, so callback is run on timeout
+        Timeout in seconds.
+    """
+
+    def __init__(self, size: int = 1, timeout: int = 10):
         self._queue = Queue(maxsize=size)
         self._observers = []
+        if size is not 1:
+            self._scheduler = BackgroundScheduler()
+            self._scheduler.add_job(self._scheduler_job, 'interval', seconds=timeout)
+            self._scheduler.start()
+
+    def _scheduler_job(self):
+        if not self._queue.empty():
+            for callback in self._observers:
+                callback()
 
     def add_to_queue(self, content):
         if content not in self._queue.queue:

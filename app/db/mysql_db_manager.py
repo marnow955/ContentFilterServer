@@ -21,7 +21,7 @@ class MySqlDbManager(DbManagerABC):
 
     def select_from_table(self, table_name: str, columns: tuple = ('*',),
                           condition: str = None, join_transaction: bool = False) -> list:
-        super().select_from_table(table_name, columns, condition, join_transaction)
+        return super().select_from_table(table_name, columns, condition, join_transaction)
 
     def update_columns(self, table_name: str, names_and_values: dict,
                        condition: str = None, join_transaction: bool = False):
