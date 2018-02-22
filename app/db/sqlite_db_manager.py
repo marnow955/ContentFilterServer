@@ -17,7 +17,11 @@ class SqliteDbManager(DbManagerABC):
         self._is_open = False
 
     def commit(self):
-        self._conn.commit()
+        try:
+            self._conn.commit()
+        except Exception as e:
+            self._conn.rollback()
+            print(e)
 
     def execute_query(self, query: str, join_transaction: bool = False) -> list:
         result = None

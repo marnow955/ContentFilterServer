@@ -14,6 +14,10 @@ class MainController(object):
             post_content, post_flag = self._db_manager.select_from_table('posts', ('content', 'flag'),
                                                                          'ID=' + str(post_id), True)[0]
             print(str(post_id) + ": " + post_content + " " + str(post_flag))
+            # get vulgarism from table
+            # TODO: run dict filter - hint: set(vulgarism_list)
+            # if vulgarism detected update flag column with 3
+            # else run nn filter and update with 1 or 2
             self._db_manager.update_columns('posts', {'flag': '0'}, 'ID=' + str(post_id), join_transaction=True)
         self._db_manager.commit()
         self._db_manager.disconnect()

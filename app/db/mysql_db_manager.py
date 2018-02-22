@@ -17,7 +17,11 @@ class MySqlDbManager(DbManagerABC):
         self._conn.close()
 
     def commit(self):
-        self._conn.commit()
+        try:
+            self._conn.commit()
+        except Exception as e:
+            self._conn.rollback()
+            print(e)
 
     def select_from_table(self, table_name: str, columns: tuple = ('*',),
                           condition: str = None, join_transaction: bool = False) -> list:
