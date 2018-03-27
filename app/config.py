@@ -8,7 +8,7 @@ class DbConfig(object):
     HOST = "localhost"
     USER = "root"
     PASSWORD = ""
-    DATABASE = "posts"
+    DATABASE = "socialapp_db"
 
 
 class SqliteConfig(object):
