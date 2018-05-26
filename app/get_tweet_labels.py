@@ -20,7 +20,6 @@ class Get_Tweet_Label():
         self.FLAGS = tf.flags.FLAGS
         self.FLAGS._parse_flags()
 
-
     def check_words_using_network(self, sentence):
         print("\nParameters:")
         for attr, value in sorted(self.FLAGS.__flags.items()):
@@ -31,8 +30,8 @@ class Get_Tweet_Label():
         x_test = np.array(list(vocab_processor.transform([sentence])))
 
         checkpoint_file = tf.train.latest_checkpoint(self.FLAGS.checkpoint_dir)
-        graph = tf.Graph()
-        with graph.as_default():
+        self.graph = tf.Graph()
+        with self.graph.as_default():
             session_conf = tf.ConfigProto(
                 allow_soft_placement=self.FLAGS.allow_soft_placement,
                 log_device_placement=self.FLAGS.log_device_placement)
@@ -41,10 +40,10 @@ class Get_Tweet_Label():
                 saver = tf.train.import_meta_graph("{}.meta".format(checkpoint_file))
                 saver.restore(sess, checkpoint_file)
 
-                input_x = graph.get_operation_by_name("input_x").outputs[0]
-                dropout_keep_prob = graph.get_operation_by_name("dropout_keep_prob").outputs[0]
+                input_x = self.graph.get_operation_by_name("input_x").outputs[0]
+                dropout_keep_prob = self.graph.get_operation_by_name("dropout_keep_prob").outputs[0]
 
-                predictions = graph.get_operation_by_name("output/predictions").outputs[0]
+                predictions = self.graph.get_operation_by_name("output/predictions").outputs[0]
                 batches = data_reader.batch_iter(list(x_test), self.FLAGS.batch_size, 1, shuffle=False)
 
                 for x_test_batch in batches:
