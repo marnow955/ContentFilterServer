@@ -34,13 +34,11 @@ def configure_app(app: Flask, config=None):
 
 
 @core.route('/')
-@requires_auth
 def index():
     return "Filtering server is working"
 
 
 @core.route('/api/new_posts', methods=['POST'])
-@requires_auth
 def new_post():
     if request.is_json:
         content = request.get_json()
