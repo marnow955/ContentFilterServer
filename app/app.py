@@ -1,4 +1,5 @@
 from flask import Flask, request, Blueprint
+from flask_cors import CORS, cross_origin
 
 from .basic_auth import requires_auth, configure_auth
 from .db.db_manager_abc import DbManagerABC
@@ -21,6 +22,7 @@ def create_app(app_config=None, auth_config=None, app_name: str = None,
         configure_auth(auth_config)
     queue = QueueManager(queue_size, queue_timeout)
     app = Flask(app_name)
+    cors = CORS(app)
     configure_app(app, app_config)
     app.register_blueprint(core)
     global controller
@@ -34,11 +36,13 @@ def configure_app(app: Flask, config=None):
 
 
 @core.route('/')
+@cross_origin()
 def index():
     return "Filtering server is working"
 
 
 @core.route('/api/new_posts', methods=['POST'])
+@cross_origin()
 def new_post():
     if request.is_json:
         content = request.get_json()
